@@ -575,9 +575,9 @@ static const yytype_int16 yyrline[] =
      167,   168,   169,   170,   173,   174,   178,   184,   192,   202,
      202,   212,   213,   217,   218,   227,   243,   244,   255,   256,
      267,   268,   279,   280,   291,   292,   303,   304,   320,   321,
-     322,   332,   345,   360,   361,   365,   366,   369,   370,   373,
-     374,   377,   378,   379,   380,   383,   384,   387,   388,   391,
-     392,   393
+     322,   332,   345,   367,   368,   372,   373,   376,   377,   380,
+     381,   384,   385,   386,   387,   390,   391,   394,   395,   398,
+     399,   400
 };
 #endif
 
@@ -1704,106 +1704,137 @@ yyreduce:
         
         if (sim.t == T_ERROR) { 
             yyerror("No existe ninguna variable con ese identificador."); 
+        } else {
+            INF inf = obtTdD(sim.ref);
+            if (inf.tipo == T_ERROR) { yyerror("No existe ninguna funcion con ese identificador.");} 
+            else {
+                if (!cmpDom(sim.ref, (yyvsp[-1].lista).ref)) {
+                    yyerror("Los parámetros actuales no coinciden con los declarados en la función.");
+                } else {
+                    (yyval.cent) = inf.tipo; // Tipo de retorno de la función
+                }
+             }
         }
-        INF inf = obtTdD(sim.ref);
-        if (inf.tipo == T_ERROR) { yyerror("No existe ninguna funcion con ese identificador.");} 
-        else { (yyval.cent) = inf.tipo; }
     }
-#line 1713 "asin.c"
+#line 1720 "asin.c"
+    break;
+
+  case 63: /* paramAct: %empty  */
+#line 367 "src/asin.y"
+      { (yyval.lista).ref = -1; }
+#line 1726 "asin.c"
+    break;
+
+  case 64: /* paramAct: listParamAct  */
+#line 368 "src/asin.y"
+                   {(yyval.lista).ref = (yyvsp[0].lista).ref; }
+#line 1732 "asin.c"
+    break;
+
+  case 65: /* listParamAct: expre  */
+#line 372 "src/asin.y"
+            { (yyval.lista).ref = insTdD(-1, (yyvsp[0].cent)); }
+#line 1738 "asin.c"
+    break;
+
+  case 66: /* listParamAct: expre COMA_ listParamAct  */
+#line 373 "src/asin.y"
+                               { (yyval.lista).ref = insTdD((yyvsp[0].lista).ref, (yyvsp[-2].cent)); }
+#line 1744 "asin.c"
     break;
 
   case 67: /* opLogic: AND_  */
-#line 369 "src/asin.y"
+#line 376 "src/asin.y"
                         {(yyval.cent) = OP_AND;}
-#line 1719 "asin.c"
+#line 1750 "asin.c"
     break;
 
   case 68: /* opLogic: OR_  */
-#line 370 "src/asin.y"
+#line 377 "src/asin.y"
                         {(yyval.cent) = OP_OR;}
-#line 1725 "asin.c"
+#line 1756 "asin.c"
     break;
 
   case 69: /* opIgual: IGUAL_  */
-#line 373 "src/asin.y"
+#line 380 "src/asin.y"
                         {(yyval.cent) = OP_IGUAL;}
-#line 1731 "asin.c"
+#line 1762 "asin.c"
     break;
 
   case 70: /* opIgual: DISTINTO_  */
-#line 374 "src/asin.y"
+#line 381 "src/asin.y"
                         {(yyval.cent) = OP_DISTINTO;}
-#line 1737 "asin.c"
+#line 1768 "asin.c"
     break;
 
   case 71: /* opRel: MAYOR_  */
-#line 377 "src/asin.y"
+#line 384 "src/asin.y"
                         {(yyval.cent) = OP_MAYOR;}
-#line 1743 "asin.c"
+#line 1774 "asin.c"
     break;
 
   case 72: /* opRel: MENOR_  */
-#line 378 "src/asin.y"
+#line 385 "src/asin.y"
                         {(yyval.cent) = OP_MENOR;}
-#line 1749 "asin.c"
+#line 1780 "asin.c"
     break;
 
   case 73: /* opRel: MAYOR_IGUAL_  */
-#line 379 "src/asin.y"
+#line 386 "src/asin.y"
                         {(yyval.cent) = OP_MAYORIG;}
-#line 1755 "asin.c"
+#line 1786 "asin.c"
     break;
 
   case 74: /* opRel: MENOR_IGUAL_  */
-#line 380 "src/asin.y"
+#line 387 "src/asin.y"
                         {(yyval.cent) = OP_MENORIG;}
-#line 1761 "asin.c"
+#line 1792 "asin.c"
     break;
 
   case 75: /* opAd: MAS_  */
-#line 383 "src/asin.y"
+#line 390 "src/asin.y"
                 {(yyval.cent) = OP_SUMA;}
-#line 1767 "asin.c"
+#line 1798 "asin.c"
     break;
 
   case 76: /* opAd: MENOS_  */
-#line 384 "src/asin.y"
+#line 391 "src/asin.y"
                 {(yyval.cent) = OP_RESTA;}
-#line 1773 "asin.c"
+#line 1804 "asin.c"
     break;
 
   case 77: /* opMul: POR_  */
-#line 387 "src/asin.y"
+#line 394 "src/asin.y"
                 {(yyval.cent) = OP_MULT;}
-#line 1779 "asin.c"
+#line 1810 "asin.c"
     break;
 
   case 78: /* opMul: DIV_  */
-#line 388 "src/asin.y"
+#line 395 "src/asin.y"
                 {(yyval.cent) = OP_DIV;}
-#line 1785 "asin.c"
+#line 1816 "asin.c"
     break;
 
   case 79: /* opUna: MAS_  */
-#line 391 "src/asin.y"
+#line 398 "src/asin.y"
                 {(yyval.cent) = OP_SUMA;}
-#line 1791 "asin.c"
+#line 1822 "asin.c"
     break;
 
   case 80: /* opUna: MENOS_  */
-#line 392 "src/asin.y"
+#line 399 "src/asin.y"
                 {(yyval.cent) = OP_RESTA;}
-#line 1797 "asin.c"
+#line 1828 "asin.c"
     break;
 
   case 81: /* opUna: NOT_  */
-#line 393 "src/asin.y"
+#line 400 "src/asin.y"
                 {(yyval.cent) = OP_NOT;}
-#line 1803 "asin.c"
+#line 1834 "asin.c"
     break;
 
 
-#line 1807 "asin.c"
+#line 1838 "asin.c"
 
       default: break;
     }
@@ -1996,4 +2027,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 395 "src/asin.y"
+#line 402 "src/asin.y"

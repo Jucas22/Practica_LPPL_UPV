@@ -22,7 +22,7 @@
 %token <cent> CTE_
 %token <ident> ID_
 
-%type <lista> listParamForm paramForm paramAct
+%type <lista> listParamForm paramForm paramAct listParamAct
 
 %type <cent> const decla listDecla declaVar tipoSimp declaFun
 %type <cent> expre expreIgual expreRel expreAd expreMul expreUna expreSufi expreOP expreLogic
@@ -364,13 +364,13 @@ expreSufi
 ;
 
 paramAct
-    : 
-    |   listParamAct
+    : { $$.ref = -1; }
+    | listParamAct {$$.ref = $1.ref; }
     ;
 
 listParamAct
-    : expre
-    | expre COMA_ listParamAct
+    : expre { $$.ref = insTdD(-1, $1); }
+    | expre COMA_ listParamAct { $$.ref = insTdD($3.ref, $1); }
     ;
 
 opLogic: AND_           {$$ = OP_AND;}
