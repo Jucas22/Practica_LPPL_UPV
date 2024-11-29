@@ -100,8 +100,9 @@ union YYSTYPE
 
     int cent;   // Para constantes enteras
     char *ident; // Para identificadores
+    Lista lista;
 
-#line 105 "asin.h"
+#line 106 "asin.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
