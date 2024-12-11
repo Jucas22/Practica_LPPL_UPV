@@ -105,7 +105,7 @@ declaFun
                 main_definida = 1;
             }
         }
-        if (!insTdS($2, FUNCION, $1, niv, dvar, $5.ref)) {
+        if (!insTdS($2, FUNCION, $1, niv-1, dvar, $5.ref)) {
                     yyerror("Función ya declarada");
         }
     }
@@ -204,7 +204,10 @@ instIter
             if ($5 != T_LOGICO) {
                 yyerror("La condición del FOR debe ser de tipo lógico");
             }
-        } else if ($3 != T_ENTERO) { yyerror("La expresion Operacion ha de ser de tipo simple"); }
+        } 
+        if ($3 != T_ERROR && $7 != T_ERROR){
+            if ($3 == T_ARRAY || $7 == T_ARRAY) { yyerror("La expresion del 'for' ha de ser de tipo simple"); }
+        }
     } PARC_ inst
 ;
 
